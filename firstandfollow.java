@@ -7,17 +7,34 @@ public class FirstFollowShort {
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        NT = sc.next().toCharArray();
-        T = sc.next().toCharArray();
+
+        // Ask for non-terminal characters
+        System.out.print("Enter non-terminals (e.g., A B C): ");
+        String ntInput = sc.nextLine();
+        NT = ntInput.replaceAll("\\s+", "").toCharArray();
+
+        // Ask for terminal characters
+        System.out.print("Enter terminals (e.g., a b c): ");
+        String tInput = sc.nextLine();
+        T = tInput.replaceAll("\\s+", "").toCharArray();
+
+        // Create grammar productions
+        System.out.print("Enter number of productions: ");
         int n = NT.length;
         G = new String[n][];
+        
         for (int i = 0; i < n; i++) {
+            System.out.print("Enter the number of productions for " + NT[i] + ": ");
             int p = sc.nextInt();
+            sc.nextLine(); // Consume the newline
             G[i] = new String[p];
-            for (int j = 0; j < p; j++)
-                G[i][j] = sc.next();
+            for (int j = 0; j < p; j++) {
+                System.out.print("Enter production " + (j + 1) + " for " + NT[i] + ": ");
+                G[i][j] = sc.nextLine();
+            }
         }
 
+        // Initialize FIRST and FOLLOW arrays
         FIRST = new String[n];
         FOLLOW = new String[n];
         for (int i = 0; i < n; i++)
@@ -25,6 +42,8 @@ public class FirstFollowShort {
         for (int i = 0; i < n; i++)
             FOLLOW[i] = follow(i, new HashSet<>());
 
+        // Output FIRST and FOLLOW sets
+        System.out.println("\nFIRST and FOLLOW sets:");
         for (int i = 0; i < n; i++)
             System.out.println("First(" + NT[i] + "): " + removeDup(FIRST[i]));
         for (int i = 0; i < n; i++)
